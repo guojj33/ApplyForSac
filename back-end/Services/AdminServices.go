@@ -48,39 +48,3 @@ func UpdateAppRecordAsAdmin(adminId string, appRecordId int, updateField string,
 		return curAdmin.UpdateAppRecord(appRecordId, updateField, newValue)
 	}
 }
-
-// func AcceptAppRecordAsAdmin(adminId string, appRecordId int) error {
-// 	curAdmin, err := GetCurAdmin(adminId)
-// 	if err != nil {
-// 		return err
-// 	} else {
-// 		return curAdmin.ReviewAndAcceptAppRecord(appRecordId)
-// 	}
-// }
-
-// func RejectAppRecordAsAdmin(adminId string, appRecordId int) error {
-// 	curAdmin, err := GetCurAdmin(adminId)
-// 	if err != nil {
-// 		return err
-// 	} else {
-// 		return curAdmin.ReviewAndRejectAppRecord(appRecordId)
-// 	}
-// }
-
-// func CheckAppRecordNormalAsAdmin(adminId string, appRecordId int) error {
-// 	curAdmin, err := GetCurAdmin(adminId)
-// 	if err != nil {
-// 		return err
-// 	} else {
-// 		return curAdmin.CheckAppRecordNormal(appRecordId)
-// 	}
-// }
-
-// func CheckAppRecordLateAsAdmin(adminId string, appRecordId int) error {
-// 	curAdmin, err := GetCurAdmin(adminId)
-// 	if err != nil {
-// 		return err
-// 	} else {
-// 		return curAdmin.CheckAppRecordLate(appRecordId)
-// 	}
-// }

@@ -8,7 +8,7 @@ var Users map[string]*User = make(map[string]*User)          //UserId -> User
 var Admins map[string]*Admin = make(map[string]*Admin)       //AdminId -> Admin
 var Rooms map[string]*Room = make(map[string]*Room)          //RoomName -> Room
 var AppRecords map[int]*AppRecord = make(map[int]*AppRecord) //AppRecordId -> AppRecord
-var NextAppRecordId int = 0                                  //下一个 AppRecords 的 Id，递增	可能得加个锁
+var NextAppRecordId int                                      //下一个 AppRecords 的 Id，递增	可能得加个锁
 
 //资源访问
 
@@ -99,7 +99,7 @@ func GetAppRecordIds() []int {
 
 func GetAppRecordsByIds(ids []int) []AppRecord {
 	appRecords := []AppRecord{}
-	for i := range ids {
+	for _, i := range ids { //少写了 _, 导致获取错误
 		appRecords = append(appRecords, *AppRecords[i])
 	}
 	return appRecords
@@ -130,6 +130,7 @@ func AddAppRecordToUser(appRecordId int, userId string) int {
 }
 
 func AddAppRecord(appRecord *AppRecord) (int, int, int) {
+	println(appRecord.AppRecordId)
 	return AddAppRecordToAppRecords(appRecord),
 		AddAppRecordToRoom(appRecord.AppRecordId, appRecord.RoomName),
 		AddAppRecordToUser(appRecord.AppRecordId, appRecord.ApplyUserId)
@@ -218,11 +219,13 @@ func InitDB() {
 		var admin Admin
 		admin.AdminId = "Admin"
 		admin.Password = "123"
+		admin.Email = "Admin@admin.com"
 		AddAdmin(&admin)
 
 		var JJ User
 		JJ.UserId = "JJ"
 		JJ.Password = "123"
+		JJ.Email = "JJ@JJ.com"
 		AddUser(&JJ)
 	}
 }

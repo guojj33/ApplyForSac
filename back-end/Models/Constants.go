@@ -18,9 +18,9 @@ const (
 type CheckStatusType int
 
 const (
-	CheckStatus_Waiting ReviewStatusType = 0 //还未签到
-	CheckStatus_Normal  CheckStatusType  = 1 //准时签入/出
-	CheckStatus_Late    CheckStatusType  = 2 //迟到签入/出
+	CheckStatus_Waiting CheckStatusType = 0 //还未签到
+	CheckStatus_Normal  CheckStatusType = 1 //准时签入/出
+	CheckStatus_Late    CheckStatusType = 2 //迟到签入/出
 )
 
 type TimeDurCompType int

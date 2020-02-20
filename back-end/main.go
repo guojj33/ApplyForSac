@@ -5,15 +5,8 @@ import (
 	"./Server"
 )
 
-// 命令行程序
-// func main() {
-// 	Models.InitDB()
-// 	defer Models.CloseDB()
-// 	UI.MainMenu()
-// }
-
 const (
-	PORT string = "8080"
+	PORT string = "8081"
 )
 
 // 服务器

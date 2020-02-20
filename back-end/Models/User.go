@@ -46,7 +46,7 @@ func (user User) CreateAppRecord(roomName string, description string, applyUsing
 func (user User) UpdateAppRecord(appRecordId int, updateField string, newValue interface{}) (int, error) {
 	//检查用户是否拥有此申请
 	existed := false
-	for tmpId := range user.AppRecordIds {
+	for _, tmpId := range user.AppRecordIds {
 		if tmpId == appRecordId {
 			existed = true
 			break

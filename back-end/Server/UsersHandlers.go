@@ -65,6 +65,7 @@ func CreateAppRecordAsUserHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		vars := mux.Vars(req)
 		userId := vars["userId"]
+		println(userId)
 		payload, _ := ioutil.ReadAll(req.Body)
 		newAppRecordRequest := struct {
 			RoomName    string
@@ -85,7 +86,8 @@ func CreateAppRecordAsUserHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.Text(w, http.StatusBadRequest, "Creation failed.\n"+err.Error()+"\n")
 			return
 		} else {
-			formatter.Text(w, http.StatusOK, "Creation succeed.\n")
+			println("Creation succeed.")
+			//formatter.Text(w, http.StatusOK, "Creation succeed.\n")
 			newAppRecord, _ := Models.GetAppRecord(newAppRecordId)
 			formatter.JSON(w, http.StatusOK, *newAppRecord)
 		}
@@ -129,9 +131,32 @@ func UpdateAppRecordAsUserHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.Text(w, http.StatusBadRequest, "Failed to update appRecord.\n"+err.Error()+"\n")
 			return
 		} else {
-			formatter.Text(w, http.StatusOK, "Update succeed.\n")
+			println("Update succeed.")
+			//formatter.Text(w, http.StatusOK, "Update succeed.\n")
 			appRecord, _ := Models.GetAppRecord(appRecordId)
 			formatter.JSON(w, http.StatusOK, *appRecord)
+		}
+	}
+}
+
+func GetAppRecordByRoomNameAsUserHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		roomName := vars["roomName"]
+		userId := vars["userId"]
+		appRecords, err := Services.GetAppRecordsByRoomNameAsUser(userId, roomName)
+		if err != nil {
+			formatter.Text(w, http.StatusBadRequest, "Failed to get appRecords.\n"+err.Error()+"\n")
+			return
+		} else {
+			info := struct {
+				Count      int `json:"Count"`
+				AppRecords []Models.AppRecord
+			}{
+				Count:      len(appRecords),
+				AppRecords: appRecords,
+			}
+			formatter.JSON(w, http.StatusOK, info)
 		}
 	}
 }

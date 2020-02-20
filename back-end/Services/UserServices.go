@@ -61,12 +61,3 @@ func UpdateAppRecordAsUser(userId string, appRecordId int, updateField string, n
 		return curUser.UpdateAppRecord(appRecordId, updateField, newValue)
 	}
 }
-
-// func CancelAppRecordAsUser(userId string, applyRecordId int) (int, error) {
-// 	curUser, err := GetCurUser(userId)
-// 	if err != nil {
-// 		return 0, err
-// 	} else {
-// 		return curUser.CancelAppRecord(applyRecordId)
-// 	}
-// }

@@ -57,7 +57,6 @@ func createAppRecordByUser(roomName string, userId string, description string, a
 
 	//修改申请数据
 	appRecord.AppRecordId = NextAppRecordId
-	NextAppRecordId++
 
 	appRecord.RoomName = roomName
 	appRecord.ApplyUserId = userId
@@ -69,6 +68,8 @@ func createAppRecordByUser(roomName string, userId string, description string, a
 
 	err := AppRecord.isAppRecordValid(*appRecord)
 	if err == nil {
+		println("NextAppRecordId:", NextAppRecordId)
+		NextAppRecordId++
 		//将申请记录添加到各个对象中
 		AddAppRecord(appRecord) //包含数据库操作
 		return appRecord.AppRecordId, nil

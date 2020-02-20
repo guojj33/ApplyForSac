@@ -1,0 +1,159 @@
+<template>
+    <el-main class="backGround">
+        <el-card :body-style="{ padding: '0px' }" class="loginCard">
+            <el-form :model="loginForm">
+                <el-form-item label="用户名">
+                <el-input v-model="loginForm.Id"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                <el-input v-model="loginForm.Password"></el-input>
+                </el-form-item>
+                <el-form-item class="buttons">
+                <el-button
+                    size="large"
+                    type="danger"
+                    @click="registerFormVisible = true">
+                    注册
+                </el-button>
+
+                <el-dialog title="注册新用户" :visible.sync="registerFormVisible">
+                    <el-form :model="registerForm">
+                        <el-form-item label="用户名">
+                        <el-input v-model="registerForm.UserId"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码">
+                        <el-input v-model="registerForm.Password"></el-input>
+                        </el-form-item>
+                        <el-form-item label="邮箱">
+                        <el-input v-model="registerForm.Email"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="registerFormVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="Register();registerFormVisible = false">注册</el-button>
+                    </div>
+                </el-dialog>
+
+                <el-button
+                    size="large"
+                    type="primary"
+                    @click="Login()">
+                    登录
+                </el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </el-main>
+</template>
+
+<script>
+import global_ from '../Global'
+import { Loading } from 'element-ui'
+
+export default {
+    name: 'Login',
+    data() {
+        return {
+            loginForm: {
+                Id: '',
+                Password: '',
+            },
+            registerForm: {
+                UserId: '',
+                Password: '',
+                Email: '',
+            },
+            registerFormVisible: false,
+        };
+    },
+    methods: {
+        Login() {
+            var self_ = this
+            if (self_.loginForm.Id === '' || self_.loginForm.Password === '') {
+                //loadingInst.close();
+                self_.$alert('用户名或密码不能为空','登录',{
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            let loadingInst = Loading.service();
+            this.axios.post("/api/login", this.loginForm)
+            .then(function (response) {
+                console.log(response);
+                if (response.status === 200) {
+                    console.log("登录成功");
+                    var responseData = response.data;
+                    console.log(responseData);
+                    // //保存 token
+                    sessionStorage.setItem('Token',responseData.Token.SAC_TOKEN);
+                    sessionStorage.setItem('Id',self_.loginForm.Id);
+                    switch (responseData.CurAccountType) {
+                        case 0:
+                            self_.$router.replace('/user/apply');
+                            console.log("用户登录");
+                            sessionStorage.setItem('AccountTypeStr','users');
+                            break;
+                        case 1:
+                            self_.$router.replace('/admin/review');
+                            console.log("管理员登陆");
+                            sessionStorage.setItem('AccountTypeStr','admins');
+                            break;
+                    }
+                } else {
+                    self_.$alert('登陆失败','登录',{
+                        confirmButtonText: "确认"
+                    });
+                    console.log("登录失败");
+                }
+                loadingInst.close();
+            })
+            .catch(function (error) {
+                self_.$alert(error,'系统',{
+                    confirmButtonText: "确认"
+                });
+                loadingInst.close();
+            });
+        },
+        Register() {
+            let self_ = this;
+            this.axios.post("/api/register", this.registerForm)
+            .then(function (response) {
+                console.log(response);
+                if (response.status === 200) {
+                    console.log("注册成功");
+                    var responseData = response.data;
+                    console.log(responseData);
+                    self_.$alert('注册成功','注册',{
+                        confirmButtonText: "确认"
+                    });
+                } else {
+                    console.log("注册失败")
+                    self_.$alert('注册失败','注册',{
+                        confirmButtonText: "确认"
+                    });
+                }
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+        }
+    }
+}
+</script>
+
+<style>
+.loginCard {
+    margin: auto;
+    padding: 20px;
+    width: 300px;
+}
+
+.backGround {
+    margin: auto;
+}
+
+.buttons {
+    width:155px;
+    margin: auto;
+}
+</style>

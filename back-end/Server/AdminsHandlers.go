@@ -63,7 +63,6 @@ func GetAllAppRecordsAsAdminHandler(formatter *render.Render) http.HandlerFunc {
 
 func UpdateAppRecordAsAdminHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-
 		vars := mux.Vars(req)
 		adminId := vars["adminId"]
 		appRecordIdStr := vars["appRecordId"]
@@ -102,6 +101,28 @@ func UpdateAppRecordAsAdminHandler(formatter *render.Render) http.HandlerFunc {
 			formatter.Text(w, http.StatusOK, "Update succeed.\n")
 			appRecord, _ := Models.GetAppRecord(appRecordId)
 			formatter.JSON(w, http.StatusOK, *appRecord)
+		}
+	}
+}
+
+func GetAppRecordByRoomNameAsAdminHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		roomName := vars["roomName"]
+		adminId := vars["adminId"]
+		appRecords, err := Services.GetAppRecordsByRoomNameAsAdmin(adminId, roomName)
+		if err != nil {
+			formatter.Text(w, http.StatusBadRequest, "Failed to get appRecords.\n"+err.Error()+"\n")
+			return
+		} else {
+			info := struct {
+				Count      int `json:"Count"`
+				AppRecords []Models.AppRecord
+			}{
+				Count:      len(appRecords),
+				AppRecords: appRecords,
+			}
+			formatter.JSON(w, http.StatusOK, info)
 		}
 	}
 }
