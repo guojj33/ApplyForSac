@@ -12,8 +12,10 @@ import AdminOccupation from '../components/Admin/Occupation'
 import AdminReview from '../components/Admin/Review'
 import AdminCheck from '../components/Admin/Check'
 import AdminInfo from '../components/Admin/Info'
+import AdminRoom from '../components/Admin/Room'
+import AdminTime from '../components/Admin/TimeManagement'
 
-import Login from '../components/Login'
+import Login from '../components/Login' 
 
 Vue.use(Router)
 
@@ -65,6 +67,14 @@ const router = new Router({
         {
           path: 'info',
           component: AdminInfo,
+        },
+        {
+          path: 'room',
+          component: AdminRoom,
+        },
+        {
+          path: 'time',
+          component: AdminTime,
         }
       ]
     }

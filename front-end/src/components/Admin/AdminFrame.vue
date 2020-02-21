@@ -15,6 +15,14 @@
                 <i class="el-icon-circle-check"></i>
                 <span slot="title">进行签到</span>
             </el-menu-item>
+            <el-menu-item index="/admin/room">
+                <i class="el-icon-house"></i>
+                <span slot="title">房间管理</span>
+            </el-menu-item>
+            <el-menu-item index="/admin/time">
+                <i class="el-icon-time"></i>
+                <span slot="title">时间调整</span>
+            </el-menu-item>
             <el-menu-item index="/admin/info">
                 <i class="el-icon-user"></i>
                 <span slot="title">个人信息</span>

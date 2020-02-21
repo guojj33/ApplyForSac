@@ -12,11 +12,13 @@
       <el-table-column
       prop="roomName"
       label="房间名"
-      width="100%">
+      sortable
+      width="110%">
       </el-table-column>
       <el-table-column
       prop="date"
       label="日期"
+      sortable
       width="100%">
       </el-table-column>
       <el-table-column
@@ -98,16 +100,16 @@ export default {
                         console.log(ar);
                         let appRecordForm = createAppRecordForm();
                         appRecordForm.appRecordId = ar.AppRecordId;
-                        appRecordForm.roomName = global_.Eng2ChiRoomName[ar.RoomName];
+                        appRecordForm.roomName = ar.RoomName;
                         appRecordForm.reviewStatus = global_.ReviewStatus[ar.ReviewStatus];
                         appRecordForm.applyStatus = global_.ApplyStatus[ar.ApplyStatus];
 
                         let duration = ar.ApplyUsingTime;
                         let startTime = new Date(duration.StartTime);
                         let endTime = new Date(duration.EndTime);
-                        appRecordForm.date = self_.$moment(startTime).format("YYYY-MM-DD");
-                        appRecordForm.startTime = self_.$moment(startTime).format("HH:mm");
-                        appRecordForm.endTime = self_.$moment(endTime).format("HH:mm");
+                        appRecordForm.date = self_.$moment(startTime).utc().format("YYYY-MM-DD");
+                        appRecordForm.startTime = self_.$moment(startTime).utc().format("HH:mm");
+                        appRecordForm.endTime = self_.$moment(endTime).utc().format("HH:mm");
                         
 
                         appRecordForms.push(appRecordForm);
@@ -159,7 +161,7 @@ export default {
 <style scoped>
 
 .reviewCard {
-    width: 700px;
+    width: 720px;
     padding: 20px;
     margin: auto;
 }

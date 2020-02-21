@@ -53,3 +53,7 @@ func (admin *Admin) GetAllAppRecords() []AppRecord {
 func (admin Admin) UpdateAppRecord(appRecordId int, updateField string, newValue interface{}) (int, error) {
 	return updateAppRecordByAdmin(admin.AdminId, appRecordId, updateField, newValue)
 }
+
+func (admin Admin) CreateAppRecord(roomName string, description string, applyUsingTime TimeDuration) (int, error) {
+	return createAppRecordByAdmin(roomName, description, applyUsingTime)
+}

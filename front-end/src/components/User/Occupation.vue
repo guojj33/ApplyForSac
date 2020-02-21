@@ -22,8 +22,7 @@
       <el-table
       v-loading="isLoading"
       :data="appRecordForms"
-      stype="width: 100%"
-      :row-class-name="GetAppRecordClassName">
+      stype="width: 100%">
       <el-table-column
       prop="appRecordId"
       label="审批号"
@@ -32,10 +31,24 @@
       <el-table-column
       prop="roomName"
       label="房间名"
+      width="110%">
+      </el-table-column>
+      <el-table-column
+      prop="userType"
+      label="用户类型"
+      width="100%">
+      </el-table-column>
+      <el-table-column
+      prop="descript"
+      label="原因"
       width="100%">
       </el-table-column>
       <el-table-column
       prop="date"
+      column-key="date"
+      sortable
+      :filter-method="queryByDate"
+      :filters="[{text:'筛选',value:'query'}]"
       label="日期"
       width="100%">
       </el-table-column>
@@ -61,6 +74,7 @@
 
 <script>
 import global_ from '../../Global'
+import { Loading } from 'element-ui'
 
 export default {
     name: 'Occupation',
@@ -78,7 +92,46 @@ export default {
             appRecordForms: [],
         };
     },
+    created(){
+        this.GetRoomOptions();
+    },
     methods: {
+        GetRoomOptions() {
+            var createRoomOption = function() {
+                var roomOption = new Object ({
+                    value: '',
+                    label: '',
+                });
+                return roomOption
+            };
+            let loadingInst = Loading.service();
+            let self_ = this;
+            let options = [];
+            this.axios.get("/api/rooms")
+            .then(function(response) {
+                console.log(response);
+                if (response.status === 200) {
+                    console.log("获取房间表成功");
+                    let rooms = response.data.rooms;
+                    for (let index in rooms) {
+                        let r = rooms[index];
+                        console.log(r);
+                        let roomOption = createRoomOption();
+                        roomOption.value = r.RoomName;
+                        roomOption.label = r.roomName;
+                        options.push(roomOption);
+                    }
+                    console.log(options);
+                    self_.roomOptions = options
+                } else {
+                    console.log("获取房间表失败");
+                }
+                loadingInst.close();
+            })
+            .catch(function(error) {
+                alert(error);
+            })
+        },
         GetAppRecordClassName({row, rowIndex}) {
             console.log(row);
             return 'success-row';
@@ -93,6 +146,8 @@ export default {
                     startTime: '',
                     endTime: '',
                     reviewStatus: '',
+                    userType: '',
+                    descript: '',
                 });
                 return appRecordForm;
             }
@@ -108,21 +163,27 @@ export default {
                     console.log(appRecords);
                     for (let index in appRecords) {
                         let ar = appRecords[index];
-                        if (ar.ApplyStatus === 1 || ar.ReviewStatus === 2) {//已经取消的申请
+                        if (ar.ApplyStatus === 1 || ar.ReviewStatus === 2) {//不显示已经取消或者被拒绝的的申请
                             continue;
                         }
                         let appRecordForm = createAppRecordForm();
                         appRecordForm.appRecordId = ar.AppRecordId;
-                        appRecordForm.roomName = global_.Eng2ChiRoomName[ar.RoomName];
+                        appRecordForm.roomName = ar.RoomName;
                         appRecordForm.reviewStatus = global_.ReviewStatus[ar.ReviewStatus];
 
                         let duration = ar.ApplyUsingTime;
                         let startTime = new Date(duration.StartTime);
                         let endTime = new Date(duration.EndTime);
-                        appRecordForm.date = self_.$moment(startTime).format("YYYY-MM-DD");
-                        appRecordForm.startTime = self_.$moment(startTime).format("HH:mm");
-                        appRecordForm.endTime = self_.$moment(endTime).format("HH:mm");
-
+                        appRecordForm.date = self_.$moment(startTime).utc().format("YYYY-MM-DD");
+                        appRecordForm.startTime = self_.$moment(startTime).utc().format("HH:mm");
+                        appRecordForm.endTime = self_.$moment(endTime).utc().format("HH:mm");
+                        if (ar.ApplyUserId === "SAC") {
+                            appRecordForm.userType = "管理员";
+                            appRecordForm.descript = ar.Description;
+                        } else {
+                            appRecordForm.userType = "普通用户";
+                            appRecordForm.descript = "-";
+                        }
                         appRecordForms.push(appRecordForm);
                     }
                     console.log(appRecordForms)
@@ -135,6 +196,15 @@ export default {
             .catch(function(error) {
                 alert(error);
             });
+        },
+        queryByDate(value, row, column) {
+            if (this.searchForm.selectedDate === '') {
+                return true;
+            }
+            let property = column['property'];
+            let date = row[property];
+            let selectedDateStr = this.$moment(this.searchForm.selectedDate).format("YYYY-MM-DD");
+            return date === selectedDateStr;
         }
     },
 }
@@ -142,7 +212,7 @@ export default {
 
 <style>
 .occupCard {
-    width: 600px;
+    width: 810px;
     margin: auto;
     padding: 20px;
 }

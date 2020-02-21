@@ -1,5 +1,5 @@
 <template>
-    <el-card :body-style="{ padding: '0px' }" class="applyCard">
+    <el-card :body-style="{ padding: '0px' }" class="timeCard">
       <el-form :model="appRecordForm">
           <el-form-item>
             <el-select v-model="appRecordForm.roomName" placeholder="请选择房间" class="input">
@@ -40,7 +40,7 @@
           <el-form-item>
                 <el-input
                 class="input descript"
-                placeholder="申请原因"
+                placeholder="关闭原因"
                 v-model="appRecordForm.descript"
                 clearable>
                 </el-input>
@@ -55,7 +55,7 @@ import global_ from '../../Global'
 import { Loading } from 'element-ui'
 
 export default {
-    name: 'Apply',
+    name: 'timeManagement',
     data() {
         return {
             roomOptions: [{
@@ -137,11 +137,11 @@ export default {
             this.axios.post("/api/" + sessionStorage.getItem('AccountTypeStr') + "/" + sessionStorage.getItem('Id') + "/appRecords", newAppRecordReq)
             .then(function(response) {
                 if (response.status === 200) {
-                    self_.$alert('创建成功','申请',{
+                    self_.$alert('创建成功','时间调整',{
                         confirmButtonText: '确定',
                     });
                 } else {
-                    self_.$alert('创建失败','申请',{
+                    self_.$alert('创建失败','时间调整',{
                         confirmButtonText: '确定',
                     });
                 }
@@ -155,7 +155,7 @@ export default {
             })
             .catch(function (error) {
                 self_.$alert(error);
-                self_.$alert('该时间段被占用','申请');
+                self_.$alert('该时间段被占用','时间调整');
             })
         },
         finishSelectingStartTime() {
@@ -177,7 +177,7 @@ export default {
 </script>
 
 <style>
-.applyCard {
+.timeCard {
     width: 456px;
     padding: 20px;
     margin: auto;

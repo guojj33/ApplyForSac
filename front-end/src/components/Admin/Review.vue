@@ -12,7 +12,7 @@
       <el-table-column
       prop="roomName"
       label="房间名"
-      width="100%">
+      width="110%">
       </el-table-column>
       <el-table-column
       prop="userId"
@@ -22,7 +22,8 @@
       <el-table-column
       prop="date"
       label="日期"
-      width="100%">
+      width="100%"
+      sortable>
       </el-table-column>
       <el-table-column
       prop="startTime"
@@ -114,21 +115,21 @@ export default {
                     console.log(appRecords);
                     for (let index in appRecords) {
                         let ar = appRecords[index];
-                        if (ar.ApplyStatus === 1) {//已经取消的申请
+                        if (ar.ApplyStatus === 1 || ar.ApplyUserId === 'SAC') {//不显示：已经取消的申请或者 SAC 的申请
                             continue;
                         }
                         let appRecordForm = createAppRecordForm();
                         appRecordForm.appRecordId = ar.AppRecordId;
-                        appRecordForm.roomName = global_.Eng2ChiRoomName[ar.RoomName];
+                        appRecordForm.roomName = ar.RoomName;
                         appRecordForm.userId = ar.ApplyUserId;
                         appRecordForm.reviewStatus = global_.ReviewStatus[ar.ReviewStatus];
 
                         let duration = ar.ApplyUsingTime;
                         let startTime = new Date(duration.StartTime);
                         let endTime = new Date(duration.EndTime);
-                        appRecordForm.date = self_.$moment(startTime).format("YYYY-MM-DD");
-                        appRecordForm.startTime = self_.$moment(startTime).format("HH:mm");
-                        appRecordForm.endTime = self_.$moment(endTime).format("HH:mm");
+                        appRecordForm.date = self_.$moment(startTime).utc().format("YYYY-MM-DD");
+                        appRecordForm.startTime = self_.$moment(startTime).utc().format("HH:mm");
+                        appRecordForm.endTime = self_.$moment(endTime).utc().format("HH:mm");
 
                         appRecordForm.descript = ar.Description;
                         appRecordForms.push(appRecordForm);
@@ -201,7 +202,7 @@ export default {
 <style scoped>
 
 .reviewCard {
-    width: 950px;
+    width: 960px;
     padding: 20px;
     margin: auto;
 }

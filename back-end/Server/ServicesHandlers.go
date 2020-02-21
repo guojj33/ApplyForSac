@@ -47,19 +47,6 @@ func CreateToken(secretKey []byte, issuer string, audience string, subject strin
 	return token, nil
 }
 
-//tokenStr -> jwt.Claims
-func ParseToken(tokenStr string, secretKey []byte) (jwt.Claims, error) {
-	token, err := jwt.Parse(tokenStr, func(*jwt.Token) (interface{}, error) {
-		return secretKey, nil
-	})
-	var claims jwt.Claims
-	if err != nil {
-		return claims, err
-	}
-	claims = token.Claims
-	return claims, nil
-}
-
 //登录 发送 token
 func LoginHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -147,6 +134,7 @@ func ValidateTokenMiddleware(next http.Handler) http.Handler {
 				return
 			}
 			//检查是否有权限请求相应的 api
+			//未完成
 			next.ServeHTTP(w, req)
 		} else {
 			w.WriteHeader(http.StatusUnauthorized)

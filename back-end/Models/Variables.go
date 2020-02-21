@@ -130,14 +130,13 @@ func AddAppRecordToUser(appRecordId int, userId string) int {
 }
 
 func AddAppRecord(appRecord *AppRecord) (int, int, int) {
-	println(appRecord.AppRecordId)
 	return AddAppRecordToAppRecords(appRecord),
 		AddAppRecordToRoom(appRecord.AppRecordId, appRecord.RoomName),
 		AddAppRecordToUser(appRecord.AppRecordId, appRecord.ApplyUserId)
 }
 
 func AddUser(user *User) (int, error) {
-	if Users[user.UserId] != nil {
+	if Users[user.UserId] != nil || user.UserId == "SAC" {
 		return len(Users), errors.New("User id has already been used.")
 	} else {
 		Users[user.UserId] = user
@@ -146,7 +145,7 @@ func AddUser(user *User) (int, error) {
 }
 
 func AddAdmin(admin *Admin) (int, error) {
-	if Admins[admin.AdminId] != nil {
+	if Admins[admin.AdminId] != nil || admin.AdminId == "SAC" {
 		return len(Admins), errors.New("Admin id has already been used.")
 	} else {
 		Admins[admin.AdminId] = admin

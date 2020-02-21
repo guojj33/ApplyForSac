@@ -43,9 +43,12 @@ func (appRecord AppRecord) isAppRecordValid() error {
 		return errors.New("Invalid duration.")
 	}
 	//判断时间是否重叠
+	//正在申请且没有被拒绝的申请
 	existAppRecords := Rooms[appRecord.RoomName].getRoomAppRecords()
 	for _, tmpAppRecord := range existAppRecords {
-		if tmpAppRecord.ApplyStatus == ApplyStatus_Applying && appRecord.ApplyUsingTime.compareWith(tmpAppRecord.ApplyUsingTime) == TimeDurComp_Overlapping {
+		if tmpAppRecord.ApplyStatus == ApplyStatus_Applying &&
+			tmpAppRecord.ReviewStatus != ReviewStatus_Rejected &&
+			appRecord.ApplyUsingTime.compareWith(tmpAppRecord.ApplyUsingTime) == TimeDurComp_Overlapping {
 			return errors.New("Application records clash.")
 		}
 	}
@@ -76,6 +79,53 @@ func createAppRecordByUser(roomName string, userId string, description string, a
 	} else {
 		return -1, err
 	}
+}
+
+//管理员创建的申请，申请人为实际不存在的 SAC ，申请会加入到 appRecords 和 room 中
+//申请的目的是暂停普通用户在该时间对该房间进行申请
+//如果已存在该事件的用户申请，自动拒绝其申请
+func createAppRecordByAdmin(roomName string, description string, applyUsingTime TimeDuration) (int, error) {
+	var appRecord *AppRecord = new(AppRecord)
+	appRecord.AppRecordId = NextAppRecordId
+	appRecord.RoomName = roomName
+	appRecord.ApplyUserId = "SAC"
+	appRecord.ApplyUsingTime = applyUsingTime
+	appRecord.Description = description
+
+	appRecord.ApplyStatus = ApplyStatus_Applying
+	appRecord.ReviewStatus = ReviewStatus_Accepted
+	appRecord.CheckStatus = CheckStatus_Normal
+
+	//拒绝所有时间冲突的其他用户的申请
+	//判断房间是否存在
+	if !isRoomExist(appRecord.RoomName) {
+		return -1, errors.New("Room doesn't exists.")
+	}
+	//判断时间是否有效
+	if !isTimeDurationValid(appRecord.ApplyUsingTime) {
+		return -1, errors.New("Invalid duration.")
+	}
+	//判断时间是否重叠
+	//正在申请且没有被拒绝的申请
+	existAppRecords := Rooms[appRecord.RoomName].getRoomAppRecords()
+	for _, tmpAppRecord := range existAppRecords {
+		if tmpAppRecord.ApplyStatus == ApplyStatus_Applying &&
+			tmpAppRecord.ReviewStatus != ReviewStatus_Rejected &&
+			appRecord.ApplyUsingTime.compareWith(tmpAppRecord.ApplyUsingTime) == TimeDurComp_Overlapping {
+			if tmpAppRecord.ApplyUserId == "SAC" {
+				return -1, errors.New("Application records clash.")
+			}
+			_, err := updateAppRecordByAdmin("SAC", tmpAppRecord.AppRecordId, "ReviewStatus", int(ReviewStatus_Rejected))
+			if err != nil {
+				return -1, errors.New("Update appRecord failed.")
+			}
+		}
+	}
+	//拒绝成功
+	NextAppRecordId++
+	AddAppRecordToAppRecords(appRecord)
+	AddAppRecordToRoom(appRecord.AppRecordId, appRecord.RoomName)
+	return appRecord.AppRecordId, nil
 }
 
 func updateAppRecordByUser(userId string, appRecordId int, updateField string, newValue interface{}) (int, error) {

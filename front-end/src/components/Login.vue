@@ -1,45 +1,48 @@
 <template>
     <el-main class="backGround">
         <el-card :body-style="{ padding: '0px' }" class="loginCard">
+            <div class="title">
+            <embed src="/static/logo.svg" type="image/svg+xml" width="50px" height="50px"/>
+            </div>
             <el-form :model="loginForm">
                 <el-form-item label="用户名">
                 <el-input v-model="loginForm.Id"></el-input>
                 </el-form-item>
                 <el-form-item label="密码">
-                <el-input v-model="loginForm.Password"></el-input>
+                <el-input v-model="loginForm.Password" show-password></el-input>
                 </el-form-item>
-                <el-form-item class="buttons">
-                <el-button
-                    size="large"
-                    type="danger"
-                    @click="registerFormVisible = true">
-                    注册
-                </el-button>
-
-                <el-dialog title="注册新用户" :visible.sync="registerFormVisible">
-                    <el-form :model="registerForm">
-                        <el-form-item label="用户名">
-                        <el-input v-model="registerForm.UserId"></el-input>
-                        </el-form-item>
-                        <el-form-item label="密码">
-                        <el-input v-model="registerForm.Password"></el-input>
-                        </el-form-item>
-                        <el-form-item label="邮箱">
-                        <el-input v-model="registerForm.Email"></el-input>
-                        </el-form-item>
-                    </el-form>
-                    <div slot="footer" class="dialog-footer">
-                        <el-button @click="registerFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="Register();registerFormVisible = false">注册</el-button>
-                    </div>
-                </el-dialog>
-
-                <el-button
-                    size="large"
-                    type="primary"
-                    @click="Login()">
-                    登录
-                </el-button>
+                <el-form-item class="button">
+                    <el-button
+                        size="large"
+                        type="danger"
+                        @click="registerFormVisible = true">
+                        注册
+                    </el-button>
+                    <el-dialog title="注册新用户" :visible.sync="registerFormVisible">
+                        <el-form :model="registerForm">
+                            <el-form-item label="用户名">
+                            <el-input v-model="registerForm.UserId"></el-input>
+                            </el-form-item>
+                            <el-form-item label="密码">
+                            <el-input v-model="registerForm.Password" show-password></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮箱">
+                            <el-input v-model="registerForm.Email"></el-input>
+                            </el-form-item>
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="registerFormVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="Register();registerFormVisible = false">注册</el-button>
+                        </div>
+                    </el-dialog>
+                </el-form-item>
+                <el-form-item class="button">
+                    <el-button
+                        size="large"
+                        type="primary"
+                        @click="Login()">
+                        登录
+                    </el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -65,6 +68,9 @@ export default {
             },
             registerFormVisible: false,
         };
+    },
+    created() {
+        this.registerFormVisible = false;
     },
     methods: {
         Login() {
@@ -115,6 +121,11 @@ export default {
             });
         },
         Register() {
+            if (this.registerForm.UserId === '' || this.registerForm.Password === ''
+            || this.registerForm.error) {
+                this.$alert('请补全信息','注册');
+                return;
+            }
             let self_ = this;
             this.axios.post("/api/register", this.registerForm)
             .then(function (response) {
@@ -134,7 +145,7 @@ export default {
                 }
             })
             .catch(function (error) {
-                alert(error);
+                self_.$alert(error);
             });
         }
     }
@@ -142,6 +153,11 @@ export default {
 </script>
 
 <style>
+.title {
+    margin: auto;
+    width: 30px;
+}
+
 .loginCard {
     margin: auto;
     padding: 20px;
@@ -152,8 +168,8 @@ export default {
     margin: auto;
 }
 
-.buttons {
-    width:155px;
-    margin: auto;
+.button {
+    width: 70px;
+    margin: 15px auto;
 }
 </style>

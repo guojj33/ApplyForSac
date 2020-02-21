@@ -32,11 +32,9 @@ axios.interceptors.request.use(config => {
 
 // http response 拦截器
 axios.interceptors.response.use(response => {
-    console.log("拦截response:",response); 
     return response;
   }, error => {
     if (error.response) {
-    console.log("拦截error:",error);
     switch (error.response.status) {
       case 401:
         sessionStorage.setItem('Token','');

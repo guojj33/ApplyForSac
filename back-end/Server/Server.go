@@ -50,10 +50,13 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
 	//mx.HandleFunc("/api/admins/", AdminsHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/admins/{adminId}", GetAdminByAdminIdHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/admins/{adminId}/appRecords", GetAllAppRecordsAsAdminHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/admins/{adminId}/appRecords", CreateAppRecordAsAdminHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/api/admins/{adminId}/appRecords/{appRecordId}", UpdateAppRecordAsAdminHandler(formatter)).Methods("PUT")
 	mx.HandleFunc("/api/admins/{adminId}/rooms/{roomName}/appRecords", GetAppRecordByRoomNameAsAdminHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/admins/{adminId}/register", RegisterNewAdminAsAdminHandler(formatter)).Methods("POST")
 
 	mx.HandleFunc("/api/rooms", RoomsHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/rooms", CreateNewRoomAsAdminHandler(formatter)).Methods("POST")
 	//mx.HandleFunc("/api/rooms/{roomName}", GetRoomByRoomNameHandler(formatter)).Methods("GET")
 
 	//mx.HandleFunc("/api/appRecords", AppRecordsHandler(formatter)).Methods("GET")
