@@ -82,6 +82,7 @@ export default {
                     endTime: '',
                     reviewStatus: '',
                     applyStatus: '',
+                    checkStatus: '',
                 });
                 return appRecordForm;
             }
@@ -103,6 +104,7 @@ export default {
                         appRecordForm.roomName = ar.RoomName;
                         appRecordForm.reviewStatus = global_.ReviewStatus[ar.ReviewStatus];
                         appRecordForm.applyStatus = global_.ApplyStatus[ar.ApplyStatus];
+                        appRecordForm.checkStatus = global_.CheckStatus[ar.CheckStatus];
 
                         let duration = ar.ApplyUsingTime;
                         let startTime = new Date(duration.StartTime);
@@ -148,7 +150,7 @@ export default {
         },
         CanNotCancel(index, row) {
             console.log(row.applyStatus);
-            if (row.applyStatus === "已取消" || row.reviewStatus === "未通过") {
+            if (row.applyStatus === "已取消" || row.reviewStatus === "未通过" || row.checkStatus === "准时" || row.checkStatus === "不准时") {
                 return true;
             } else {
                 return false;

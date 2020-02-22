@@ -1,4 +1,6 @@
 <template>
+<el-container>
+    <el-main>
     <el-card :body-style="{ padding: '0px' }" class="infoCard">
     <el-form :model="userInfo">
         <el-form-item label="用户名">
@@ -17,6 +19,15 @@
         </el-form-item>
     </el-form>
     </el-card>
+    </el-main>
+    <el-footer>
+        <div class="footer">
+        <a target="_blank" href="https://github.com/guojj33/ApplyForSac">Apply For Sac</a>
+        &nbsp;by&nbsp;
+        <a target="_blank" href="https://github.com/guojj33">guojj33</a>
+        </div>
+    </el-footer>
+</el-container>
 </template>
 
 <script>

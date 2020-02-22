@@ -1,4 +1,5 @@
 <template>
+<el-container>
     <el-main class="backGround">
         <el-card :body-style="{ padding: '0px' }" class="loginCard">
             <div class="title">
@@ -47,6 +48,14 @@
             </el-form>
         </el-card>
     </el-main>
+    <el-footer>
+        <div class="footer">
+        <a target="_blank" href="https://github.com/guojj33/ApplyForSac">Apply For Sac</a>
+        &nbsp;by&nbsp;
+        <a target="_blank" href="https://github.com/guojj33">guojj33</a>
+        </div>
+    </el-footer>
+</el-container>
 </template>
 
 <script>
@@ -171,5 +180,19 @@ export default {
 .button {
     width: 70px;
     margin: 15px auto;
+}
+
+.footer {
+    text-align: center;
+    color: #909399;
+    font-size: 13px;
+}
+
+a:link {
+    color: #909399;
+}
+
+a:visited {
+    color: #909399;
 }
 </style>

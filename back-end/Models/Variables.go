@@ -136,7 +136,7 @@ func AddAppRecord(appRecord *AppRecord) (int, int, int) {
 }
 
 func AddUser(user *User) (int, error) {
-	if Users[user.UserId] != nil || user.UserId == "SAC" {
+	if Users[user.UserId] != nil || user.UserId == "SAC" || Admins[user.UserId] != nil {
 		return len(Users), errors.New("User id has already been used.")
 	} else {
 		Users[user.UserId] = user
@@ -145,7 +145,7 @@ func AddUser(user *User) (int, error) {
 }
 
 func AddAdmin(admin *Admin) (int, error) {
-	if Admins[admin.AdminId] != nil || admin.AdminId == "SAC" {
+	if Admins[admin.AdminId] != nil || admin.AdminId == "SAC" || Users[admin.AdminId] != nil {
 		return len(Admins), errors.New("Admin id has already been used.")
 	} else {
 		Admins[admin.AdminId] = admin
