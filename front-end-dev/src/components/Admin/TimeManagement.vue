@@ -62,7 +62,7 @@ export default {
                     value: 'PianoRoom1',
                     label: '钢琴房1'
                 }],
-            startTimes: global_.Times.slice(0, global_.Times.length-1),
+            startTimes: global_.Times.slice(0, global_.Times.length-2),
             canNotSelectEndTime: true,
             endTimes: [],
             appRecordForm: {
@@ -160,6 +160,7 @@ export default {
         },
         finishSelectingStartTime() {
             this.canNotSelectEndTime = false;
+            this.appRecordForm.endTime = '';
             let selectStartTimeIndex = -1;
             for (let index in global_.Times) {
                 let time = global_.Times[index]

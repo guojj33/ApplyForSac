@@ -7,8 +7,8 @@
                     v-for="item in roomOptions"
                     :key="item.value"
                     :label="item.label"
-                    :value="item.value"
-                    ></el-option>
+                    :value="item.value">
+                    </el-option>
             </el-select>
             <el-date-picker
             class="input"
@@ -23,8 +23,8 @@
                         v-for="item in startTimes"
                         :key="item.value"
                         :label="item.value"
-                        :value="item.value"
-                        ></el-option>
+                        :value="item.value">
+                    </el-option>
                 </el-select>
           </el-form-item>
           <el-form-item label="结束时间">
@@ -33,8 +33,8 @@
                         v-for="item in endTimes"
                         :key="item.value"
                         :label="item.value"
-                        :value="item.value"
-                        ></el-option>
+                        :value="item.value">
+                    </el-option>
                 </el-select>
           </el-form-item>
           <el-form-item>
@@ -160,6 +160,7 @@ export default {
         },
         finishSelectingStartTime() {
             this.canNotSelectEndTime = false;
+            this.appRecordForm.endTime = '';
             let selectStartTimeIndex = -1;
             for (let index in global_.Times) {
                 let time = global_.Times[index]

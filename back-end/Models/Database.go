@@ -28,6 +28,7 @@ func OpenDB(dbName string) {
 			tx.CreateBucketIfNotExists([]byte("Admins"))
 			tx.CreateBucketIfNotExists([]byte("Rooms"))
 			tx.CreateBucketIfNotExists([]byte("AppRecords"))
+			tx.CreateBucketIfNotExists([]byte("Comments"))
 			return nil
 		})
 		if err != nil {
@@ -41,27 +42,33 @@ func CloseDB() {
 	db.Close()
 }
 
-func LoadDataFromDB() (map[string]*User, map[string]*Admin, map[string]*Room, map[int]*AppRecord, int, error) {
+func LoadDataFromDB() (map[string]*User, map[string]*Admin, map[string]*Room, map[int]*AppRecord, int, map[int]*Comment, int, error) {
 	var err error
 	var users map[string]*User
 	var admins map[string]*Admin
 	var rooms map[string]*Room
 	var appRecords map[int]*AppRecord
 	var nextAppRecord int = -1
+	var comments map[int]*Comment
+	var nextCommentId int = -1
 	if users, err = GetAllUsersFromDB(); err != nil {
-		return users, admins, rooms, appRecords, nextAppRecord, err
+		return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
 	}
 	if admins, err = GetAllAdminsFromDB(); err != nil {
-		return users, admins, rooms, appRecords, nextAppRecord, err
+		return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
 	}
 	if rooms, err = GetAllRoomsFromDB(); err != nil {
-		return users, admins, rooms, appRecords, nextAppRecord, err
+		return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
 	}
 	if appRecords, err = GetAllAppRecordsFromDB(); err != nil {
-		return users, admins, rooms, appRecords, nextAppRecord, err
+		return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
 	}
 	nextAppRecord = GetCount("AppRecords")
-	return users, admins, rooms, appRecords, nextAppRecord, err
+	if comments, err = GetAllCommentsFromDB(); err != nil {
+		return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
+	}
+	nextCommentId = GetCount("Comments")
+	return users, admins, rooms, appRecords, nextAppRecord, comments, nextCommentId, err
 }
 
 func GetAllUsersFromDB() (map[string]*User, error) {
@@ -136,6 +143,24 @@ func GetAllAppRecordsFromDB() (map[int]*AppRecord, error) {
 	return appRecords, e
 }
 
+func GetAllCommentsFromDB() (map[int]*Comment, error) {
+	comments := make(map[int]*Comment, GetCount("Comments"))
+	e := db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("Comments"))
+		er := b.ForEach(func(k, v []byte) error {
+			curCommentId := Code.BytesToInt(k[:])
+			var curComment Comment
+			err := Code.Decode(v, &curComment)
+			if err == nil {
+				comments[curCommentId] = &curComment
+			}
+			return err
+		})
+		return er
+	})
+	return comments, e
+}
+
 func AddUserToDB(user *User) error {
 	userIdByte := []byte(user.UserId)
 	userByte, err := Code.Encode(user)
@@ -176,6 +201,17 @@ func AddAppRecordToDB(appRecord *AppRecord) error {
 		return err
 	} else {
 		err = AddValue([]byte("AppRecords"), appRecordIdByte, appRecordByte)
+		return err
+	}
+}
+
+func AddCommentToDB(comment *Comment) error {
+	commentIdByte := Code.IntToBytes(comment.CommentId)
+	commentByte, err := Code.Encode(comment)
+	if err != nil {
+		return err
+	} else {
+		err = AddValue([]byte("Comments"), commentIdByte, commentByte)
 		return err
 	}
 }

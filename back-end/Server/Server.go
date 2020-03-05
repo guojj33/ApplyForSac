@@ -40,14 +40,17 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/api/register", RegisterHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/api/logout", LogoutHandler(formatter)).Methods("POST")
 
-	//mx.HandleFunc("/api/users/", UsersHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/comments", CommentsHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/comments", AddCommentAsGuestHandler(formatter)).Methods("POST")
+
+	mx.HandleFunc("/api/users", UsersHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/users/{userId}", GetUserByUserIdHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/users/{userId}/appRecords", GetUserAppRecordsAsUserHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/users/{userId}/appRecords", CreateAppRecordAsUserHandler(formatter)).Methods("POST")
 	mx.HandleFunc("/api/users/{userId}/appRecords/{appRecordId}", UpdateAppRecordAsUserHandler(formatter)).Methods("PUT")
 	mx.HandleFunc("/api/users/{userId}/rooms/{roomName}/appRecords", GetAppRecordByRoomNameAsUserHandler(formatter)).Methods("GET")
 
-	//mx.HandleFunc("/api/admins/", AdminsHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/api/admins", AdminsHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/admins/{adminId}", GetAdminByAdminIdHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/admins/{adminId}/appRecords", GetAllAppRecordsAsAdminHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/api/admins/{adminId}/appRecords", CreateAppRecordAsAdminHandler(formatter)).Methods("POST")

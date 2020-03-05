@@ -1,10 +1,16 @@
 ## ElementUI/Vue.js/go 简易房间预定网站
 
+### 运行环境
+
+- Windows 10
+- Windows Server 2019 Datacenter
+
 ### 安装与运行
 
-- [运行前端](./front-end/README.md)
-- [运行后端](./back-end/README.md)
-- 浏览器登录 ``localhost:8080``
+- [部署前端（生产环境）](./front-end/README.md)
+- [部署前端（开发环境）](./front-end-dev/README.md)
+- [部署后端](./back-end/README.md)
+- 本地测试时浏览器登录 ``localhost:8080``
 
 ### 使用说明
 
@@ -26,6 +32,12 @@
 ## ![1](C:\Users\JJ\Desktop\ApplyForSac\assets\1.PNG)
 
 ![2](C:\Users\JJ\Desktop\ApplyForSac\assets\2.PNG)
+
+- 游客评论界面
+
+  随便输入昵称和内容即可发表评论
+
+  ![](assets/13.PNG)
 
 #### 用户界面
 

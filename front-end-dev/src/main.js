@@ -39,7 +39,7 @@ axios.interceptors.response.use(response => {
       case 401:
         sessionStorage.setItem('Token','');
         sessionStorage.setItem('AccountTypeStr','');
-        router.replace('/')
+        router.replace('/');
       }
     }
   return Promise.reject(error.response.data)

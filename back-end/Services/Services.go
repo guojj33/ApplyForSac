@@ -21,3 +21,7 @@ func RegisterNewUser(userId, password, email string) (Models.User, error) {
 	}
 	return newUser, err
 }
+
+func AddCommentAsGuest(name string, content string) (int, error) {
+	return Models.AddComment(name, content)
+}

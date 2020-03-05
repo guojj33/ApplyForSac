@@ -28,6 +28,30 @@ var Times = [{
                 value: '17:40'
             },{
                 value: '18:00'
+            },{
+                value: '18:20'
+            },{
+                value: '18:40'
+            },{
+                value: '19:00'
+            },{
+                value: '19:20'
+            },{
+                value: '19:40'
+            },{
+                value: '20:00'
+            },{
+                value: '20:20'
+            },{
+                value: '20:40'
+            },{
+                value: '21:00'
+            },{
+                value: '21:20'
+            },{
+                value: '21:40'
+            },{
+                value: '22:00'
             }];
 
 export default {

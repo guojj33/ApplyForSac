@@ -1,80 +1,69 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-
-import UserFrame from '../components/User/UserFrame'
-import UserOccupation from '../components/User/Occupation'
-import UserApply from '../components/User/Apply'
-import UserReview from '../components/User/Review'
-import UserInfo from '../components/User/Info'
-
-import AdminFrame from '../components/Admin/AdminFrame'
-import AdminOccupation from '../components/Admin/Occupation'
-import AdminReview from '../components/Admin/Review'
-import AdminCheck from '../components/Admin/Check'
-import AdminInfo from '../components/Admin/Info'
-import AdminRoom from '../components/Admin/Room'
-import AdminTime from '../components/Admin/TimeManagement'
-
-import Login from '../components/Login' 
+import Router from 'vue-router' 
 
 Vue.use(Router)
 
 const router = new Router({
-  mode: "history",
+  //mode: "history",
+  mode: "hash",
   routes: [
     {
       path: '/',
-      component: Login
+      component: resolve => require(['../components/Login'], resolve)
     },
     {
       path: '/user',
-      component: UserFrame,
+      component: resolve => require(['../components/User/UserFrame'], resolve),
       children: [
         {
           path: 'occupation',
-          component: UserOccupation,
+          component: resolve => require(['../components/User/Occupation'], resolve),
         },
         {
           path: 'apply',
-          component: UserApply,
+          component: resolve => require(['../components/User/Apply'], resolve),
         },
         {
           path: 'review',
-          component: UserReview,
+          component: resolve => require(['../components/User/Review'], resolve),
         },
         {
           path: 'info',
-          component: UserInfo,
+          component: resolve => require(['../components/User/Info'], resolve),
         }
       ]
     },
     {
       path: '/admin',
-      component: AdminFrame,
+      component: resolve => require(['../components/Admin/AdminFrame'], resolve),
       children: [
         {
           path: 'occupation',
-          component: AdminOccupation,
+          component: resolve => require(['../components/Admin/Occupation'], resolve),
         },
         {
           path: 'review',
-          component: AdminReview,
+          component: resolve => require(['../components/Admin/Review'], resolve),
         },
         {
           path: 'check',
-          component: AdminCheck,
+          component: resolve => require(['../components/Admin/Check'], resolve),
         },
         {
           path: 'info',
-          component: AdminInfo,
+          component: resolve => require(['../components/Admin/Info'], resolve),
         },
         {
           path: 'room',
-          component: AdminRoom,
+          component: resolve => require(['../components/Admin/Room'], resolve),
+        },
+        {
+          path: 'accounts',
+          component: resolve => require(['../components/Admin/Accounts'], resolve),
         },
         {
           path: 'time',
-          component: AdminTime,
+          component: resolve => require(['../components/Admin/TimeManagement'], resolve),
         }
       ]
     }

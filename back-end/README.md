@@ -13,9 +13,23 @@
 	github.com/dgrijalva/jwt-go/request
 	github.com/dgrijalva/jwt-go
   ```
-- 直接运行
-  ```
+  
+- 运行
+  
+  直接运行
+  
+```shell
   go run main.go
   ```
-
+  
+  或者生成可执行文件再运行
+  
+  ```
+  go build
+  ./back-end.exe
+  ```
+  
+  
+  
 - 默认在 ``localhost:8081`` 运行
+

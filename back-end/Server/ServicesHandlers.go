@@ -98,7 +98,7 @@ func ValidateTokenMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		//println("reqURI:" + req.RequestURI)
 		//不需要 token 就可以请求的 api
-		if req.RequestURI == "/api/login" || req.RequestURI == "/api/register" {
+		if req.RequestURI == "/api/login" || req.RequestURI == "/api/register" || req.RequestURI == "/api/comments" {
 			next.ServeHTTP(w, req)
 			return
 		}

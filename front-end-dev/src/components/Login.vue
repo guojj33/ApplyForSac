@@ -47,6 +47,33 @@
                 </el-form-item>
             </el-form>
         </el-card>
+        <el-card class="commentCard">
+            <div v-for="(coment, index) in comments" :key="index">
+                <div class="cName">{{coment.name}}</div>
+                <div class="cContent">{{coment.content}}</div>
+                <el-divider></el-divider>
+            </div>
+            <div class="addCommentBox">
+                <el-form v-model="addCommentForm">
+                    <el-form-item>
+                        <el-input style="width: 110px;" v-model="addCommentForm.name" placeholder="随便的昵称">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input type="textarea"  :autosize="{minRows: 2}" v-model="addCommentForm.content" placeholder="随便的内容...">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button
+                        size="large"
+                        type="primary"
+                        @click="AddComment()">
+                        发表
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-card>
     </el-main>
     <el-footer>
         <div class="footer">
@@ -66,6 +93,17 @@ export default {
     name: 'Login',
     data() {
         return {
+            addCommentForm: {
+                name: '',
+                content: '',
+            },
+            comments: [{
+                name: 'Admin',
+                content: 'Hi',
+            },{
+                name: 'JJ',
+                content: 'Hello',
+            }],
             loginForm: {
                 Id: '',
                 Password: '',
@@ -80,8 +118,66 @@ export default {
     },
     created() {
         this.registerFormVisible = false;
+        this.GetComments();
     },
     methods: {
+        GetComments() {
+            var createCommentRow = function() {
+                var commentRow = new Object ({
+                    name: '',
+                    content: '',
+                })
+                return commentRow;
+            }
+            let loadingInst = Loading.service();
+            let self_ = this;
+            let commentRows = [];
+            this.axios.get("/api/comments")
+            .then(function(response) {
+                console.log(response)
+                if (response.status === 200) {
+                    console.log("获取评论列表成功");
+                    let commentsData = response.data.comments;
+                    for (let index in commentsData) {
+                        let c = commentsData[index];
+                        let commentRow = createCommentRow()
+                        commentRow.name = c.Name
+                        commentRow.content = c.Content
+                        commentRows.push(commentRow);
+                    }
+                    self_.comments = commentRows;
+                } else {
+                    console.log("获取评论列表失败")
+                }
+                loadingInst.close();
+            })
+            .catch(function(error) {
+                self_.$alert(error)
+            })
+        },
+        AddComment() {
+            if (this.addCommentForm.name === '' || this.addCommentForm.content === '') {
+                this.$alert('请补全评论信息', '评论');
+                return;
+            }
+            let self_ = this;
+            this.axios.post("api/comments", this.addCommentForm)
+            .then(function(response) {
+                if (response.status === 200) {
+                    self_.$alert('发表成功','评论');
+                    self_.GetComments();
+                } else {
+                    self_.$alert('发表失败','评论');
+                }
+                self_.addCommentForm = {
+                    name: '',
+                    content: '',
+                };
+            })
+            .catch(function(error) {
+                self_.$alert(error);
+            })
+        },
         Login() {
             var self_ = this
             if (self_.loginForm.Id === '' || self_.loginForm.Password === '') {
@@ -168,7 +264,7 @@ export default {
 }
 
 .loginCard {
-    margin: auto;
+    margin: 20px auto;
     padding: 20px;
     width: 300px;
 }
@@ -194,5 +290,22 @@ a:link {
 
 a:visited {
     color: #909399;
+}
+
+.commentCard {
+    margin: auto;
+    padding: 10px;
+    width: 320px;
+}
+
+.cName {
+    color: #fb7299;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.cContent {
+    font-size: 16px;
 }
 </style>

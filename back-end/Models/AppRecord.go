@@ -72,9 +72,18 @@ func createAppRecordByUser(roomName string, userId string, description string, a
 	err := AppRecord.isAppRecordValid(*appRecord)
 	if err == nil {
 		println("NextAppRecordId:", NextAppRecordId)
-		NextAppRecordId++
 		//将申请记录添加到各个对象中
-		AddAppRecord(appRecord) //包含数据库操作
+		_, e1, _, e2, _, e3 := AddAppRecord(appRecord) //包含数据库操作
+		if e1 != nil {
+			return -1, e1
+		}
+		if e2 != nil {
+			return -1, e2
+		}
+		if e3 != nil {
+			return -1, e3
+		}
+		NextAppRecordId++ //所有操作无误后才真正修改内存中的值
 		return appRecord.AppRecordId, nil
 	} else {
 		return -1, err
@@ -106,7 +115,7 @@ func createAppRecordByAdmin(roomName string, description string, applyUsingTime 
 		return -1, errors.New("Invalid duration.")
 	}
 	//判断时间是否重叠
-	//正在申请且没有被拒绝的申请
+	//正在申请且待审核中或已通过的申请 将会被自动取消
 	existAppRecords := Rooms[appRecord.RoomName].getRoomAppRecords()
 	for _, tmpAppRecord := range existAppRecords {
 		if tmpAppRecord.ApplyStatus == ApplyStatus_Applying &&

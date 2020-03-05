@@ -19,15 +19,16 @@
         <el-table
         v-loading="isLoading"
         :data="rooms"
-        stype="width: 100%">
+        style="width: 100%">
             <el-table-column
             prop="roomName"
             label="房间名"
-            width="200px">
+            width="200px"
+            sortable>
             </el-table-column>
         </el-table>   
     </el-card>
-</template>>
+</template>
 
 <script>
 export default {
@@ -99,7 +100,7 @@ export default {
                 }
             })
             .catch(function(error) {
-                alert(error);
+                self_.$alert(error);
             })
         }
     }

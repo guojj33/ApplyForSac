@@ -64,7 +64,7 @@ export default {
                 loadingInst.close();
             })
             .catch(function(error) {
-                alert(error);
+                self_.$alert(error);
             });
         },
         LogOut() {
@@ -83,7 +83,7 @@ export default {
                 loadingInst.close();
             })
             .catch(function(error) {
-                alert(error);
+                self_.$alert(error);
             })
         }
     }

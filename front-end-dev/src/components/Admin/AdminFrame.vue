@@ -23,9 +23,13 @@
                 <i class="el-icon-time"></i>
                 <span slot="title">时间调整</span>
             </el-menu-item>
+            <el-menu-item index="/admin/accounts">
+                <i class="el-icon-user"></i>
+                <span slot="title">账户管理</span>
+            </el-menu-item>
             <el-menu-item index="/admin/info">
                 <i class="el-icon-user"></i>
-                <span slot="title">个人信息</span>
+                <span slot="title">登出/注册</span>
             </el-menu-item>
           </el-menu>
         </el-header>
