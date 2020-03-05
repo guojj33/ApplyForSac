@@ -71,9 +71,9 @@ func initRoutes(mx *mux.Router, formatter *render.Render) {
 	//api 代理
 	mx.PathPrefix("/api").Handler(apih)
 	//非静态资源
-	fneh := &fileNotExistHandle{host: "47.112.254.255", port: "8080"} //服务器公有地址与前端端口
-	mx.PathPrefix("/user").Handler(fneh)
-	mx.PathPrefix("/admin").Handler(fneh)
+	// fneh := &fileNotExistHandle{host: "47.112.254.255", port: "8080"} //服务器公有地址与前端端口
+	// mx.PathPrefix("/user").Handler(fneh)
+	// mx.PathPrefix("/admin").Handler(fneh)
 	//静态资源
 	mx.PathPrefix("/").Handler(http.FileServer(http.Dir(webRoot + "/assets/")))
 }
