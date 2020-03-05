@@ -27,15 +27,15 @@
 - 使用用户名和密码登录，服务器会识别是普通用户还是管理员，根据用户类型跳转页面
 - 此页面的注册功能只能注册普通用户
 
-## <img src="assets/1.PNG" alt="1" style="zoom:50%;"/>
+![1](assets/1.PNG)
 
-<img src="assets/2.PNG" alt="2" style="zoom: 33%;" />
+![2](assets/2.PNG)
 
 - 游客评论界面
 
   随便输入昵称和内容即可发表评论
 
-  <img src="assets/13.PNG" alt="13" style="zoom:50%;" />
+  ![13](assets/13.PNG)
 
 #### 用户界面
 
@@ -114,11 +114,10 @@
 
 - 可以查看所有存在的普通用户与管理员
 
-<img src="assets/14.PNG" alt="14" style="zoom:50%;" />
+![14](assets/14.PNG)
 
 ##### 登出/注册
 
 - 可以注册新管理员，即新管理员只能由已存在管理员注册得到
 
 ![12](assets/12.PNG)
-
