@@ -29,15 +29,15 @@
 
 
 
-## ![1](C:\Users\JJ\Desktop\ApplyForSac\assets\1.PNG)
+## ![1](assets/1.PNG)
 
-![2](C:\Users\JJ\Desktop\ApplyForSac\assets\2.PNG)
+![2](assets/2.PNG)
 
 - 游客评论界面
 
   随便输入昵称和内容即可发表评论
 
-  ![](assets/13.PNG)
+  ![13](assets/13.PNG)
 
 #### 用户界面
 
@@ -48,7 +48,7 @@
 - 日期过滤器存在一个小缺陷，需要按照图中顺序才能开启，有些繁琐
 - 列表中的“原因”一列，当用户类型为普通用户时，会显示“-”，表示保护隐私；为管理员，则会显示具体原因
 
-![3](C:\Users\JJ\Desktop\ApplyForSac\assets\3.PNG)
+![3](assets/3.PNG)
 
 ##### 创建房间申请
 
@@ -56,7 +56,7 @@
 - 选择开始时间后，结束时间选择器才能激活，后者的时间选择列表会根据前者的选择而变化，保证结束时间比开始时间晚
 - 只有当时间没有冲突时，才能创建成功
 
-![4](C:\Users\JJ\Desktop\ApplyForSac\assets\4.PNG)
+![4](assets/4.PNG)
 
 ##### 查看审核情况
 
@@ -65,14 +65,14 @@
 - 审核表显示了审核状态，审核状态包括待审核、已通过、未通过
 - 除审核状态为未通过或者该申请已经被签到（在管理员界面可以看到）时，用户均可取消申请，取消后申请记录会保存
 
-![5](C:\Users\JJ\Desktop\ApplyForSac\assets\5.PNG)
+![5](assets/5.PNG)
 
 ##### 个人信息
 
 - 显示用户信息，不能修改
 - 点击退出登录，前端和后端都会清楚对应的 token
 
-![6](C:\Users\JJ\Desktop\ApplyForSac\assets\6.PNG)
+![6](assets/6.PNG)
 
 #### 管理员界面
 
@@ -80,7 +80,7 @@
 
 - 与用户界面的相似，但是无论用户类型是什么，都会显示具体原因
 
-![7](C:\Users\JJ\Desktop\ApplyForSac\assets\7.PNG)
+![7](assets/7.PNG)
 
 ##### 进行审核
 
@@ -89,32 +89,32 @@
 - 点击表头中的“日期”可以按照日期排序
 - 拒绝和通过操作均不可逆，点击任意一个若成功，则变暗不可再点击
 
-![8](C:\Users\JJ\Desktop\ApplyForSac\assets\8.PNG)
+![8](assets/8.PNG)
 
 ##### 进行签到
 
 - 只有通过审核且没有被用户取消的申请
 - 签到操作同样不可逆
 
-![9](C:\Users\JJ\Desktop\ApplyForSac\assets\9.PNG)
+![9](assets/9.PNG)
 
 ##### 房间管理
 
 - 可以创建房间，但不能删除
 - 创建后，网站的所有房间列表选择器均会更新
 
-![10](C:\Users\JJ\Desktop\ApplyForSac\assets\10.PNG)
+![10](assets/10.PNG)
 
 ##### 时间调整
 
 - 其实就是管理员级别的申请，创建时会自动把与该时间冲突的用户的申请全部拒绝。
 - 创建的申请的使用者是一个名为“SAC”的虚拟账户（即并不存在此账户，不能登录，无法注册同名账号），在查看占用界面显示的管理员类型账户其实就是这个虚拟账户（谜之设定）
 
-![11](C:\Users\JJ\Desktop\ApplyForSac\assets\11.PNG)
+![11](assets/11.PNG)
 
 ##### 个人信息
 
 - 可以注册新管理员，即新管理员只能由已存在管理员注册得到
 
-![12](C:\Users\JJ\Desktop\ApplyForSac\assets\12.PNG)
+![12](assets/12.PNG)
 
