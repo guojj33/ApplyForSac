@@ -1,6 +1,7 @@
 const resolve = require('path').resolve
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const url = require('url')
 const publicPath = './'
 
@@ -47,7 +48,20 @@ module.exports = (options = {}) => ({
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       favicon: './static/logo.png'
-    })
+    }),
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: options.dev ? true : false,
+          // 打包后 log 就不会出现了
+          drop_debugger: options.dev ? false : true,
+          drop_console: options.dev ? false : true,
+          //pure_funcs: ['console.log']
+        }
+      },
+      sourceMap: true,
+      parallel: true
+    }),
   ],
   resolve: {
     alias: {
@@ -71,5 +85,12 @@ module.exports = (options = {}) => ({
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
   },
-  devtool: options.dev ? '#eval-source-map' : '#source-map'
+  devtool: options.dev ? '#eval-source-map' : '#source-map',
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'element-ui': 'ELEMENT',
+    'axios': 'axios',
+    'moment': 'moment',
+  },
 })

@@ -8,9 +8,14 @@
 ### 安装与运行
 
 - [部署前端（生产环境）](./front-end/README.md)
+
 - [部署前端（开发环境）](./front-end-dev/README.md)
+
 - [部署后端](./back-end/README.md)
+
 - 本地测试时浏览器登录 ``localhost:8080``
+
+  部署到服务端则登录服务器的公有地址加端口8080
 
 ### 使用说明
 

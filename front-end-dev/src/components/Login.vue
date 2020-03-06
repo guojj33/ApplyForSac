@@ -97,13 +97,7 @@ export default {
                 name: '',
                 content: '',
             },
-            comments: [{
-                name: 'Admin',
-                content: 'Hi',
-            },{
-                name: 'JJ',
-                content: 'Hello',
-            }],
+            comments: [],
             loginForm: {
                 Id: '',
                 Password: '',
